@@ -2,22 +2,22 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id';
 import { Question } from '@/domain/forum/enterprise/entities/question';
 import { QuestionsRepository } from '../repositories/questions-repository';
 
-interface CreateQuestionRequest {
+interface CreateQuestionUseCaseRequest {
   authorId: string;
   title: string;
   content: string;
 }
-interface CreateQuestionResponse {
+interface CreateQuestionUseCaseResponse {
   question: Question;
 }
 
-export class CreateQuestion {
+export class CreateQuestionUseCase {
   constructor(private questionRepository: QuestionsRepository) {}
   async execute({
     content,
     authorId,
     title,
-  }: CreateQuestionRequest): Promise<CreateQuestionResponse> {
+  }: CreateQuestionUseCaseRequest): Promise<CreateQuestionUseCaseResponse> {
     const question = Question.create({
       authorId: new UniqueEntityId(authorId),
       title,

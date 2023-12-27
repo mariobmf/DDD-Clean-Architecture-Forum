@@ -1,15 +1,15 @@
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers.repository';
-import { EditAnswer } from './edit-answer';
+import { EditAnswerUseCase } from './edit-answer';
 import { makeAnswer } from 'test/factories/make-answer.factory';
 import { UniqueEntityId } from '@/core/entities/unique-entity-id';
 
 let inMemoryAnswersRepository: InMemoryAnswersRepository;
-let sut: EditAnswer;
+let sut: EditAnswerUseCase;
 
 describe('Edit answer use case', () => {
   beforeEach(() => {
     inMemoryAnswersRepository = new InMemoryAnswersRepository();
-    sut = new EditAnswer(inMemoryAnswersRepository);
+    sut = new EditAnswerUseCase(inMemoryAnswersRepository);
   });
   it('Should edit an answer', async () => {
     const newAnswer = makeAnswer(

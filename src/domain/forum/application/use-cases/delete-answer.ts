@@ -1,17 +1,17 @@
 import { AnswersRepository } from '../repositories/answers-repository';
 
-interface DeleteAnswerRequest {
+interface DeleteAnswerUseCaseRequest {
   authorId: string;
   answerId: string;
 }
-interface DeleteAnswerResponse {}
+interface DeleteAnswerUseCaseResponse {}
 
-export class DeleteAnswer {
+export class DeleteAnswerUseCase {
   constructor(private answerRepository: AnswersRepository) {}
   async execute({
     answerId,
     authorId,
-  }: DeleteAnswerRequest): Promise<DeleteAnswerResponse> {
+  }: DeleteAnswerUseCaseRequest): Promise<DeleteAnswerUseCaseResponse> {
     const answer = await this.answerRepository.findById(answerId);
     if (!answer) throw new Error('Answer not found');
     if (authorId !== answer.authorId.toString()) throw new Error('Not allowed');

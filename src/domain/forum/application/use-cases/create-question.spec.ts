@@ -1,13 +1,13 @@
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions.repository';
-import { CreateQuestion } from './create-question';
+import { CreateQuestionUseCase } from './create-question';
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
-let sut: CreateQuestion;
+let sut: CreateQuestionUseCase;
 
 describe('Create question use case', () => {
   beforeEach(() => {
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository();
-    sut = new CreateQuestion(inMemoryQuestionsRepository);
+    sut = new CreateQuestionUseCase(inMemoryQuestionsRepository);
   });
   it('Should create an question', async () => {
     const { question } = await sut.execute({

@@ -1,37 +1,37 @@
-import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions.repository';
-import { DeleteQuestion } from './delete-question';
-import { makeQuestion } from 'test/factories/make-question.factory';
+import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers.repository';
+import { DeleteAnswerUseCase } from './delete-answer';
+import { makeAnswer } from 'test/factories/make-answer.factory';
 import { UniqueEntityId } from '@/core/entities/unique-entity-id';
 
-let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
-let sut: DeleteQuestion;
+let inMemoryAnswersRepository: InMemoryAnswersRepository;
+let sut: DeleteAnswerUseCase;
 
-describe('Delete question use case', () => {
+describe('Delete answer use case', () => {
   beforeEach(() => {
-    inMemoryQuestionsRepository = new InMemoryQuestionsRepository();
-    sut = new DeleteQuestion(inMemoryQuestionsRepository);
+    inMemoryAnswersRepository = new InMemoryAnswersRepository();
+    sut = new DeleteAnswerUseCase(inMemoryAnswersRepository);
   });
-  it('Should delete an question', async () => {
-    const newQuestion = makeQuestion(
+  it('Should delete an answer', async () => {
+    const newAnswer = makeAnswer(
       { authorId: new UniqueEntityId('author-1') },
-      new UniqueEntityId('question-1'),
+      new UniqueEntityId('answer-1'),
     );
-    await inMemoryQuestionsRepository.create(newQuestion);
+    await inMemoryAnswersRepository.create(newAnswer);
     await sut.execute({
-      questionId: 'question-1',
+      answerId: 'answer-1',
       authorId: 'author-1',
     });
-    expect(inMemoryQuestionsRepository.items).toHaveLength(0);
+    expect(inMemoryAnswersRepository.items).toHaveLength(0);
   });
-  it('Should NOT delete an question from another user', async () => {
-    const newQuestion = makeQuestion(
+  it('Should NOT delete an answer from another user', async () => {
+    const newAnswer = makeAnswer(
       { authorId: new UniqueEntityId('author-1') },
-      new UniqueEntityId('question-1'),
+      new UniqueEntityId('answer-1'),
     );
-    await inMemoryQuestionsRepository.create(newQuestion);
+    await inMemoryAnswersRepository.create(newAnswer);
     expect(() =>
       sut.execute({
-        questionId: 'question-1',
+        answerId: 'answer-1',
         authorId: 'author-2',
       }),
     ).rejects.toBeInstanceOf(Error);

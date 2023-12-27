@@ -1,13 +1,13 @@
 import { AnswersRepository } from '@/domain/forum/application/repositories/answers-repository';
 import { QuestionsRepository } from '../repositories/questions-repository';
 
-interface ChooseQuestionBestAnswerRequest {
+interface ChooseQuestionBestAnswerUseCaseRequest {
   authorId: string;
   answerId: string;
 }
-interface ChooseQuestionBestAnswerResponse {}
+interface ChooseQuestionBestAnswerUseCaseResponse {}
 
-export class ChooseQuestionBestAnswer {
+export class ChooseQuestionBestAnswerUseCase {
   constructor(
     private questionRepository: QuestionsRepository,
     private answerRepository: AnswersRepository,
@@ -15,7 +15,7 @@ export class ChooseQuestionBestAnswer {
   async execute({
     answerId,
     authorId,
-  }: ChooseQuestionBestAnswerRequest): Promise<ChooseQuestionBestAnswerResponse> {
+  }: ChooseQuestionBestAnswerUseCaseRequest): Promise<ChooseQuestionBestAnswerUseCaseResponse> {
     const answer = await this.answerRepository.findById(answerId);
     if (!answer) throw new Error('Answer not found');
     const question = await this.questionRepository.findById(

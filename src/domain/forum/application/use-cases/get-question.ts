@@ -1,16 +1,18 @@
 import { Question } from '@/domain/forum/enterprise/entities/question';
 import { QuestionsRepository } from '../repositories/questions-repository';
 
-interface GetQuestionRequest {
+interface GetQuestionUseCaseRequest {
   slug: string;
 }
-interface GetQuestionResponse {
+interface GetQuestionUseCaseResponse {
   question: Question;
 }
 
-export class GetQuestion {
+export class GetQuestionUseCase {
   constructor(private questionRepository: QuestionsRepository) {}
-  async execute({ slug }: GetQuestionRequest): Promise<GetQuestionResponse> {
+  async execute({
+    slug,
+  }: GetQuestionUseCaseRequest): Promise<GetQuestionUseCaseResponse> {
     const question = await this.questionRepository.findBySlug(slug);
 
     if (!question) throw new Error('Question not found');
