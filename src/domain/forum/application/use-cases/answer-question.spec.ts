@@ -1,12 +1,18 @@
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers.repository';
 import { AnswerQuestionUseCase } from './answer-question';
+import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments.repository';
 
+let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository;
 let inMemoryAnswersRepository: InMemoryAnswersRepository;
 let sut: AnswerQuestionUseCase;
 
 describe('Answer Question use case', () => {
   beforeEach(() => {
-    inMemoryAnswersRepository = new InMemoryAnswersRepository();
+    inMemoryAnswerAttachmentsRepository =
+      new InMemoryAnswerAttachmentsRepository();
+    inMemoryAnswersRepository = new InMemoryAnswersRepository(
+      inMemoryAnswerAttachmentsRepository,
+    );
     sut = new AnswerQuestionUseCase(inMemoryAnswersRepository);
   });
 
@@ -15,11 +21,15 @@ describe('Answer Question use case', () => {
       instructorId: '1',
       questionId: '1',
       content: 'Content',
+      attachmentsIds: ['1', '2'],
     });
 
     expect(result.isRight()).toBeTruthy();
     expect(inMemoryAnswersRepository.items[0].id).toEqual(
       result.value?.answer.id,
     );
+    expect(
+      inMemoryAnswersRepository.items[0].attachments.currentItems,
+    ).toHaveLength(2);
   });
 });
