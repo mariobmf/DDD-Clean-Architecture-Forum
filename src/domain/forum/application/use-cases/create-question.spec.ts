@@ -14,9 +14,13 @@ describe('Create question use case', () => {
       authorId: '1',
       title: 'title',
       content: 'Content',
+      attachmentsIds: ['1', '2'],
     });
     expect(result.isRight()).toBeTruthy();
     expect(inMemoryQuestionsRepository.items[0].content).toEqual('Content');
     expect(inMemoryQuestionsRepository.items[0].title).toEqual('title');
+    expect(
+      inMemoryQuestionsRepository.items[0].attachments.currentItems,
+    ).toHaveLength(2);
   });
 });
