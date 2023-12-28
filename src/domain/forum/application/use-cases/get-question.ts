@@ -1,12 +1,16 @@
 import { Question } from '@/domain/forum/enterprise/entities/question';
 import { QuestionsRepository } from '../repositories/questions-repository';
+import { Either, right } from '@/core/either';
 
 interface GetQuestionUseCaseRequest {
   slug: string;
 }
-interface GetQuestionUseCaseResponse {
-  question: Question;
-}
+type GetQuestionUseCaseResponse = Either<
+  null,
+  {
+    question: Question;
+  }
+>;
 
 export class GetQuestionUseCase {
   constructor(private questionRepository: QuestionsRepository) {}
@@ -17,6 +21,6 @@ export class GetQuestionUseCase {
 
     if (!question) throw new Error('Question not found');
 
-    return { question };
+    return right({ question });
   }
 }

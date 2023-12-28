@@ -2,15 +2,21 @@ import { QuestionsRepository } from '../repositories/questions-repository';
 import { QuestionComment } from '../../enterprise/entities/question-comment';
 import { QuestionCommentsRepository } from '../repositories/question-comments-repository';
 import { UniqueEntityId } from '@/core/entities/unique-entity-id';
+import { Either, left, right } from '@/core/either';
+import { ResourceNotFoundError } from './errors/resource-not-found.error';
 
 interface CommentOnQuestionRequest {
   authorId: string;
   questionId: string;
   content: string;
 }
-interface CommentOnQuestionResponse {
-  questionComment: QuestionComment;
-}
+
+type CommentOnQuestionResponse = Either<
+  ResourceNotFoundError,
+  {
+    questionComment: QuestionComment;
+  }
+>;
 
 export class CommentOnQuestionUseCase {
   constructor(
@@ -23,13 +29,13 @@ export class CommentOnQuestionUseCase {
     questionId,
   }: CommentOnQuestionRequest): Promise<CommentOnQuestionResponse> {
     const question = await this.questionsRepository.findById(questionId);
-    if (!question) throw new Error('Question not found');
+    if (!question) return left(new ResourceNotFoundError());
     const questionComment = QuestionComment.create({
       authorId: new UniqueEntityId(authorId),
       content,
       questionId: new UniqueEntityId(questionId),
     });
     await this.questionCommentsRepository.create(questionComment);
-    return { questionComment };
+    return right({ questionComment });
   }
 }

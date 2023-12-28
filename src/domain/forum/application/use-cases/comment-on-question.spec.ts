@@ -20,14 +20,12 @@ describe('CommentOnQuestionUseCase', () => {
   it('Should be able to comment on question', async () => {
     const question = makeQuestion();
     await inMemoryQuestionsRepository.create(question);
-
-    const { questionComment } = await sut.execute({
+    const result = await sut.execute({
       authorId: question.authorId.toString(),
       questionId: question.id.toString(),
       content: 'Comment',
     });
-
-    expect(questionComment.content).toEqual('Comment');
+    expect(result.isRight()).toBeTruthy();
     expect(inMemoryQuestionCommentsRepository.items[0].content).toEqual(
       'Comment',
     );

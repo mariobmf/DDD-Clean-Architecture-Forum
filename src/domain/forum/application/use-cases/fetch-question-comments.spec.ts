@@ -22,11 +22,11 @@ describe('FetchQuestionCommentsUseCase', () => {
     await inMemoryQuestionCommentsRepository.create(
       makeQuestionComment({ questionId: new UniqueEntityId('question-1') }),
     );
-    const { questionComments } = await sut.execute({
+    const result = await sut.execute({
       page: 1,
       questionId: 'question-1',
     });
-    expect(questionComments).toHaveLength(3);
+    expect(result.value?.questionComments).toHaveLength(3);
   });
   it('Should be able to fetch paginated question comments', async () => {
     const amountQuestionComments = 22;
@@ -35,10 +35,10 @@ describe('FetchQuestionCommentsUseCase', () => {
         makeQuestionComment({ questionId: new UniqueEntityId('question-1') }),
       );
     }
-    const { questionComments } = await sut.execute({
+    const result = await sut.execute({
       page: 2,
       questionId: 'question-1',
     });
-    expect(questionComments).toHaveLength(2);
+    expect(result.value?.questionComments).toHaveLength(2);
   });
 });

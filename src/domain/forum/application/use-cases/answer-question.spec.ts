@@ -11,12 +11,15 @@ describe('Answer Question use case', () => {
   });
 
   it('Should create an answer', async () => {
-    const answer = await sut.execute({
+    const result = await sut.execute({
       instructorId: '1',
       questionId: '1',
       content: 'Content',
     });
 
-    expect(answer.content).toEqual('Content');
+    expect(result.isRight()).toBeTruthy();
+    expect(inMemoryAnswersRepository.items[0].id).toEqual(
+      result.value?.answer.id,
+    );
   });
 });

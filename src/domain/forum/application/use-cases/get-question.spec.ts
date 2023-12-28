@@ -15,9 +15,9 @@ describe('Get question use case', () => {
     const mockSlug = 'example-question';
     const newQuestion = makeQuestion({ slug: Slug.create(mockSlug) });
     await inMemoryQuestionsRepository.create(newQuestion);
-    const { question } = await sut.execute({
+    const result = await sut.execute({
       slug: mockSlug,
     });
-    expect(question.id).toBeTruthy();
+    expect(result.value?.question.id).toBeTruthy();
   });
 });

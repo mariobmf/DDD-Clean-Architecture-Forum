@@ -20,13 +20,12 @@ describe('CommentOnAnswerUseCase', () => {
     const answer = makeAnswer();
     await inMemoryAnswersRepository.create(answer);
 
-    const { answerComment } = await sut.execute({
+    const result = await sut.execute({
       authorId: answer.authorId.toString(),
       answerId: answer.id.toString(),
       content: 'Comment',
     });
-
-    expect(answerComment.content).toEqual('Comment');
+    expect(result.isRight()).toBeTruthy();
     expect(inMemoryAnswerCommentsRepository.items[0].content).toEqual(
       'Comment',
     );

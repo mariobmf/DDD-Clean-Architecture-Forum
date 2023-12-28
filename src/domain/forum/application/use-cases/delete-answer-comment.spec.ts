@@ -13,20 +13,21 @@ describe('DeleteAnswerCommentsUseCase', () => {
   it('Should delete an answer comment', async () => {
     const answerComment = makeAnswerComment();
     await inMemoryAnswerCommentsRepository.create(answerComment);
-    await sut.execute({
+    const result = await sut.execute({
       answerCommentId: answerComment.id.toString(),
       authorId: answerComment.authorId.toString(),
     });
+    expect(result.isRight()).toBeTruthy();
     expect(inMemoryAnswerCommentsRepository.items).toHaveLength(0);
   });
   it('Should NOT delete an answer comments from another user', async () => {
     const answerComment = makeAnswerComment();
     await inMemoryAnswerCommentsRepository.create(answerComment);
-    expect(() =>
-      sut.execute({
-        answerCommentId: answerComment.id.toString(),
-        authorId: 'OTHER_AUTHOR_ID',
-      }),
-    ).rejects.toBeInstanceOf(Error);
+    const result = await sut.execute({
+      answerCommentId: answerComment.id.toString(),
+      authorId: 'OTHER_AUTHOR_ID',
+    });
+    expect(result.isLeft()).toBeTruthy();
+    expect(result.value).toBeInstanceOf(Error);
   });
 });
