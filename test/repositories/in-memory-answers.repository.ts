@@ -13,7 +13,6 @@ export class InMemoryAnswersRepository implements AnswersRepository {
 
   async create(answer: Answer): Promise<void> {
     this.items.push(answer);
-
     DomainEvents.dispatchEventsForAggregate(answer.id);
   }
 
