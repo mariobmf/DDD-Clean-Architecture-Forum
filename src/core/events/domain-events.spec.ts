@@ -1,20 +1,19 @@
-import { vi } from 'vitest';
 import { AggregateRoot } from '../entities/aggregate-root';
 import { UniqueEntityId } from '../entities/unique-entity-id';
 import { DomainEvent } from './domain-event';
 import { DomainEvents } from './domain-events';
 
 class CustomAggregateCreatedEvent implements DomainEvent {
-  public readonly occurredAt: Date;
+  private readonly _ocurredAt: Date;
   private aggregate: CustomAggregate;
 
   constructor(aggregate: CustomAggregate) {
-    this.occurredAt = new Date();
+    this._ocurredAt = new Date();
     this.aggregate = aggregate;
   }
 
   get ocurredAt(): Date {
-    return this.occurredAt;
+    return this._ocurredAt;
   }
 
   public getAggregateId(): UniqueEntityId {
