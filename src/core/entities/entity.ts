@@ -12,4 +12,8 @@ export abstract class Entity<T> {
   get id() {
     return this._id;
   }
+
+  public equals(entity: Entity<any>) {
+    return entity === this || entity.id === this.id;
+  }
 }
